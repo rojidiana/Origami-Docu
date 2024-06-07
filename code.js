@@ -8,18 +8,38 @@ figma.ui.onmessage = async (msg) => {
       return;
     }
 
-    const content = await fetchContentFromFigma(frame.id);
+    const content = await captureFrameContent(frame);
     figma.ui.postMessage({ type: 'content', content });
   }
 };
 
-async function fetchContentFromFigma(nodeId) {
-  const fileId = process.env.FIGMA_FILE_ID;
-  const response = await fetch(`https://api.figma.com/v1/files/${fileId}/nodes?ids=${nodeId}`, {
-    headers: {
-      'X-Figma-Token': process.env.FIGMA_TOKEN
+async function captureFrameContent(frame) {
+  let content = '';
+  const nodesToExport = [];
+
+  function traverse(node) {
+    if ('children' in node) {
+      node.children.forEach(traverse);
+    } else if (node.type === 'TEXT') {
+      content += node.characters + '\n';
+    } else if (node.type === 'RECTANGLE' || node.type === 'ELLIPSE' || node.type === 'FRAME') {
+      nodesToExport.push(node);
     }
-  });
-  const data = await response.json();
-  return JSON.stringify(data, null, 2);
+  }
+
+  traverse(frame);
+
+  for (const node of nodesToExport) {
+    const imageData = await exportNodeAsImage(node);
+    content += `![Image](${imageData})\n`;
+  }
+
+  return content;
+}
+
+async function exportNodeAsImage(node) {
+  const exportOptions = { format: 'PNG' };
+  const imageBytes = await node.exportAsync(exportOptions);
+  const base64Image = figma.base64Encode(imageBytes);
+  return `data:image/png;base64,${base64Image}`;
 }

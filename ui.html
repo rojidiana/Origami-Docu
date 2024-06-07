@@ -10,19 +10,21 @@
 </head>
 <body>
   <textarea id="content" readonly></textarea>
-  <button id="publish">Publish</button>
+  <button id="publish">Upload Docu</button>
   <script>
     const textarea = document.getElementById('content');
 
     window.onmessage = event => {
       const message = event.data.pluginMessage;
       if (message.type === 'content') {
+        console.log('Received content:', message.content);
         textarea.value = message.content;
       }
     };
 
     document.getElementById('publish').onclick = () => {
       const content = textarea.value;
+      console.log('Publishing content:', content);
       publishContent(content);
     };
 
@@ -33,7 +35,7 @@
         body: JSON.stringify({ content })
       });
       const data = await response.json();
-      console.log(data);
+      console.log('Server response:', data);
     };
 
     parent.postMessage({ pluginMessage: { type: 'get-content' } }, '*');
