@@ -26,7 +26,7 @@
       const content = textarea.value;
       console.log('Publishing content:', content);
 
-      const response = await fetch('https://api.github.com/repos/tu_usuario/tu_repositorio/contents/docs/content.md', {
+      const response = await fetch('https://api.github.com/repos/rojidiana/Origami-Docu/contents/docs/content.md', {
         method: 'PUT',
         headers: {
           'Authorization': 'token TU_GITHUB_TOKEN',
@@ -44,7 +44,7 @@
     };
 
     async function getCurrentSha() {
-      const response = await fetch('https://api.github.com/repos/tu_usuario/tu_repositorio/contents/docs/content.md', {
+      const response = await fetch('https://api.github.com/repos/rojidiana/Origami-Docu/contents/docs/content.md', {
         headers: {
           'Authorization': 'token TU_GITHUB_TOKEN'
         }
