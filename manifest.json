@@ -1,0 +1,19 @@
+{
+    "name": "Origami docu",
+    "id": "1364299910872740972",
+    "api": "1.0.0",
+    "main": "code.js",
+    "capabilities": [],
+    "enableProposedApi": false,
+    "documentAccess": "dynamic-page",
+    "editorType": [
+      "figma"
+    ],
+    "ui": "ui.html",
+    "networkAccess": {
+      "allowedDomains": [
+        "none"
+      ]
+    }
+  }
+  

@@ -1,0 +1,8 @@
+{
+    "title": "Origami Documentation",
+    "description": "Documentation for the Origami project",
+    "structure": {
+      "readme": "content.md"
+    }
+  }
+  

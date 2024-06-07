@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Figma to Markdown</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    textarea { width: 100%; height: 80vh; }
+  </style>
+</head>
+<body>
+  <textarea id="content" readonly></textarea>
+  <button id="publish">Publish</button>
+  <script>
+    const textarea = document.getElementById('content');
+
+    window.onmessage = event => {
+      const message = event.data.pluginMessage;
+      if (message.type === 'content') {
+        textarea.value = message.content;
+      }
+    };
+
+    document.getElementById('publish').onclick = () => {
+      const content = textarea.value;
+      publishContent(content);
+    };
+
+    async function publishContent(content) {
+      const response = await fetch('http://localhost:3000/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content })
+      });
+      const data = await response.json();
+      console.log(data);
+    };
+
+    parent.postMessage({ pluginMessage: { type: 'get-content' } }, '*');
+  </script>
+</body>
+</html>
