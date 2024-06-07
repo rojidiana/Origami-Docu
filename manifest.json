@@ -9,10 +9,5 @@
   "editorType": [
     "figma"
   ],
-  "ui": "ui.html",
-  "networkAccess": {
-    "devAllowedDomains": [
-      "http://localhost:3000"
-    ]
-  }
+  "ui": "ui.html"
 }
