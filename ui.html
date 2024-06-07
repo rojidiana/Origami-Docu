@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Figma to Markdown</title>
+  <title>Figma to GitHub</title>
   <style>
     body { font-family: Arial, sans-serif; }
     textarea { width: 100%; height: 80vh; }
@@ -17,25 +17,27 @@
     window.onmessage = event => {
       const message = event.data.pluginMessage;
       if (message.type === 'content') {
-        console.log('Received content:', message.content);
         textarea.value = message.content;
       }
     };
 
     document.getElementById('publish').onclick = async () => {
       const content = textarea.value;
-      console.log('Publishing content:', content);
+      const repo = 'rojidiana/Origami-Docu'; // Reemplaza con tu usuario y repositorio
+      const path = 'docs/content.md';
+      const token = 'ghp_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'; // Reemplaza con tu token de GitHub
 
-      const response = await fetch('https://api.github.com/repos/rojidiana/Origami-Docu/contents/docs/content.md', {
+      const sha = await getCurrentSha(repo, path, token);
+      const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
         method: 'PUT',
         headers: {
-          'Authorization': 'token Token docu',
+          'Authorization': `token ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           message: 'Update content from Figma',
           content: btoa(unescape(encodeURIComponent(content))),
-          sha: await getCurrentSha()
+          sha: sha
         })
       });
 
@@ -43,10 +45,10 @@
       console.log('Server response:', data);
     };
 
-    async function getCurrentSha() {
-      const response = await fetch('https://api.github.com/repos/rojidiana/Origami-Docu/contents/docs/content.md', {
+    async function getCurrentSha(repo, path, token) {
+      const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
         headers: {
-          'Authorization': 'token Token docu'
+          'Authorization': `token ${token}`
         }
       });
       const data = await response.json();
@@ -57,4 +59,3 @@
   </script>
 </body>
 </html>
-
