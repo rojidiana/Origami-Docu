@@ -5,10 +5,7 @@
   "main": "code.js",
   "capabilities": [],
   "enableProposedApi": false,
-  "documentAccess": {
-    "mode": "read",
-    "allowScript": true
-  },
+  "documentAccess": "read",
   "editorType": [
     "figma"
   ],
